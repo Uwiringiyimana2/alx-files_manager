@@ -35,4 +35,12 @@ export default class UsersController {
       res.status(500).json({ 'error': 'Internal server error' });
     }
   }
+
+  static async getMe(req, res) {
+    const { user } = req;
+    res.status(200).json({
+      email: user.email,
+      id: user._id.toString(),
+    });
+  }
 }
