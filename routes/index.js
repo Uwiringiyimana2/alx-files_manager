@@ -19,6 +19,10 @@ function appRoutes(app) {
 
   // Creating a new file in DB and in disk
   app.post('/files', xTokenAuthenticate, FilesController.postUpload);
+  app.get('/files/:id', xTokenAuthenticate, FilesController.getShow);
+  app.get('/files', xTokenAuthenticate, FilesController.getIndex);
+  app.put('/files/:id/publish', xTokenAuthenticate, FilesController.putPublish);
+  // app.put('/files/:id/publish', xTokenAuthenticate, FilesController.putUnpublish);
 }
 
 export default appRoutes;
