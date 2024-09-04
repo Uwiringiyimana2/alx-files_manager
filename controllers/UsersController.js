@@ -1,5 +1,5 @@
-import dbClient from "../utils/db";
 import sha1 from 'sha1';
+import dbClient from '../utils/db';
 
 export default class UsersController {
   static async postNew(req, res) {
@@ -7,20 +7,20 @@ export default class UsersController {
     const password = req.body ? req.body.password : null;
 
     if (!email) {
-      res.status(400).json({'error': 'Missing email'});
+      res.status(400).json({ error: 'Missing email' });
       return;
     }
     if (!password) {
-      res.status(400).json({'error': 'Missing password'});
+      res.status(400).json({ error: 'Missing password' });
       return;
     }
     const user = await (await dbClient.usersCollection()).findOne({ email });
 
     if (user) {
-      res.status(400).json({'error': 'Already exist' });
+      res.status(400).json({ error: 'Already exist' });
       return;
     }
-    
+
     try {
       const newUser = await (await dbClient.usersCollection()).insertOne({
         email,
@@ -31,8 +31,8 @@ export default class UsersController {
         email,
       });
     } catch (error) {
-      console.error("Error inserting user:", error);
-      res.status(500).json({ 'error': 'Internal server error' });
+      console.error('Error inserting user:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
   }
 

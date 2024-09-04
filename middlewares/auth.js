@@ -1,5 +1,4 @@
-import { use } from "chai";
-import { getUserFromAuthorization, getUserFromToken } from "../utils/auth";
+import { getUserFromAuthorization, getUserFromToken } from '../utils/auth';
 
 /**
  * Applies Basic authentication to a route.

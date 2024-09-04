@@ -12,8 +12,6 @@ import { Request, Response } from 'express';
 import { contentType } from 'mime-types';
 import { ObjectId } from 'mongodb';
 import dbClient from '../utils/db';
-import { getUserFromXToken } from '../utils/auth';
-import { error } from 'console';
 
 const VALID_FILE_TYPES = {
   folder: 'folder',
@@ -140,22 +138,22 @@ export default class FilesController {
     const userId = user._id.toString();
     const file = await (await dbClient.filesCollection())
       .findOne({
-        _id: new ObjectId(isValidId(id) ? id: NULL_ID),
-        userId: new ObjectId(isValidId(userId) ? userId: NULL_ID),
+        _id: new ObjectId(isValidId(id) ? id : NULL_ID),
+        userId: new ObjectId(isValidId(userId) ? userId : NULL_ID),
       });
-      if (!file) {
-        res.status(404).json({ error: 'Not found' });
-        return;
-      }
-      res.status(200).json({
-        id,
-        userId,
-        name: file.name,
-        type: file.type,
-        isPublic: file.isPublic,
-        parentId: file.parentId === ROOT_FOLDER_ID.toString()
-          ? 0
-          : file.parentId.toString(),
+    if (!file) {
+      res.status(404).json({ error: 'Not found' });
+      return;
+    }
+    res.status(200).json({
+      id,
+      userId,
+      name: file.name,
+      type: file.type,
+      isPublic: file.isPublic,
+      parentId: file.parentId === ROOT_FOLDER_ID.toString()
+        ? 0
+        : file.parentId.toString(),
     });
   }
 
@@ -188,9 +186,9 @@ export default class FilesController {
             isPublic: '$isPublic',
             parentId: {
               $cond: { if: { $eq: ['$parentId', '0'] }, then: 0, else: '$parentId' },
-            }
-          }
-        }
+            },
+          },
+        },
       ])).toArray();
     res.status(200).json(files);
   }
